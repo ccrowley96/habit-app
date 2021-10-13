@@ -1,7 +1,6 @@
-import React from "react";
+import React, { useState } from 'react';
 import {
   Text,
-  Link,
   HStack,
   Center,
   Heading,
@@ -10,43 +9,34 @@ import {
   NativeBaseProvider,
   extendTheme,
   VStack,
-  Code,
-} from "native-base";
-import NativeBaseIcon from "./components/NativeBaseIcon";
+} from 'native-base';
+import AddHabit from './components/AddHabit';
+import HabitContainer from './components/HabitContainer';
 
 // Define the config
 const config = {
   useSystemColorMode: false,
-  initialColorMode: "dark",
+  initialColorMode: 'dark',
 };
 
 // extend the theme
 export const theme = extendTheme({ config });
 
 export default function App() {
+  const [habits, setHabits] = useState<Array<IHabit>>([]);
+
   return (
     <NativeBaseProvider>
       <Center
-        _dark={{ bg: "blueGray.900" }}
-        _light={{ bg: "blueGray.50" }}
+        _dark={{ bg: 'blueGray.900' }}
+        _light={{ bg: 'blueGray.50' }}
         px={4}
         flex={1}
       >
-        <VStack space={5} alignItems="center">
-          <NativeBaseIcon />
-          <Heading size="lg">Welcome to NativeBase</Heading>
-          <HStack space={2} alignItems="center">
-            <Text>Edit</Text>
-            <Code>App.tsx</Code>
-            <Text>and save to reload.</Text>
-          </HStack>
-          <Link href="https://docs.nativebase.io" isExternal>
-            <Text color="primary.500" underline fontSize={"xl"}>
-              Learn NativeBase
-            </Text>
-          </Link>
-          <ToggleDarkMode />
-        </VStack>
+        <HabitContainer habits={habits} />
+        <AddHabit
+          onAdd={() => setHabits((prev) => [...prev, { label: 'New habit' }])}
+        />
       </Center>
     </NativeBaseProvider>
   );
@@ -59,10 +49,10 @@ function ToggleDarkMode() {
     <HStack space={2} alignItems="center">
       <Text>Dark</Text>
       <Switch
-        isChecked={colorMode === "light" ? true : false}
+        isChecked={colorMode === 'light' ? true : false}
         onToggle={toggleColorMode}
         aria-label={
-          colorMode === "light" ? "switch to dark mode" : "switch to light mode"
+          colorMode === 'light' ? 'switch to dark mode' : 'switch to light mode'
         }
       />
       <Text>Light</Text>
